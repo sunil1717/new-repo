@@ -266,7 +266,8 @@ export default function HomePage() {
 
 
   const parsedSizes = filterOptions.SIZE.map(sizeStr => {
-    const match = sizeStr.match(/^([A-Z]*\d+)(?:\/(\d+))?R(\d+[A-Z]*)$/i);
+    const match = sizeStr.match(/^([A-Z]*\d+(?:\.\d+)?)(?:\/(\d+(?:\.\d+)?))?R(\d+(?:\.\d+)?[A-Z]*)$/i
+);
     return match ? { width: match[1], profile: match[2], rimSize: match[3] } : null;
   }).filter(Boolean);
 
@@ -447,7 +448,8 @@ export default function HomePage() {
 
     let width = '', profile = '', rimSize = '';
     if (tyre.SIZE && typeof tyre.SIZE === 'string') {
-      const match = tyre.SIZE.match(/^([A-Z]*\d+)(?:\/(\d+))?R(\d+[A-Z]*)$/i);
+      const match = tyre.SIZE.match(/^([A-Z]*\d+(?:\.\d+)?)(?:\/(\d+(?:\.\d+)?))?R(\d+(?:\.\d+)?[A-Z]*)$/i
+);
       if (match) {
         [, width, profile, rimSize] = match;
       }
@@ -496,6 +498,7 @@ export default function HomePage() {
         <h4 className="text-md font-bold text-gray-800 mb-1 text-center">
           {tyre.Model}
         </h4>
+        
         <p className="text-sm text-gray-600 text-center mb-4 flex flex-row justify-center items-center ">
           <span> {width}/{profile}R{rimSize} ({tyre["LOAD/SPEED RATING"]})</span>
           {tyre.Marking && tyre.Marking !== "NaN" && (

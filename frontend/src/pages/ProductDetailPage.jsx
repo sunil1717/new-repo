@@ -104,7 +104,8 @@ const ProductSingle = () => {
 
       let width = '', profile = '', rimSize = '';
       if (tyre.SIZE && typeof tyre.SIZE === 'string') {
-        const match = tyre.SIZE.match(/^([A-Z]*\d+)(?:\/(\d+))?R(\d+[A-Z]*)$/i);
+        const match = tyre.SIZE.match(/^([A-Z]*\d+(?:\.\d+)?)(?:\/(\d+(?:\.\d+)?))?R(\d+(?:\.\d+)?[A-Z]*)$/i
+);
 
         if (match) {
           [, width, profile, rimSize] = match;

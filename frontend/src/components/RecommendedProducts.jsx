@@ -21,10 +21,10 @@ const RecommendedProducts = ({ tyres }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   const getTyreKey = (tyre) => {
-     const size = tyre.SIZE || 
-    (tyre?.profile 
-      ? `${tyre?.width}/${tyre?.profile}R${tyre?.rimSize}` 
-      : `${tyre?.width}R${tyre?.rimSize}`);
+    const size = tyre.SIZE ||
+      (tyre?.profile
+        ? `${tyre?.width}/${tyre?.profile}R${tyre?.rimSize}`
+        : `${tyre?.width}R${tyre?.rimSize}`);
     const rating = tyre["LOAD/SPEED RATING"] || tyre.rating;
     const Marking = tyre.Marking;
     const RunFlat = tyre.RunFlat;
@@ -120,13 +120,22 @@ const RecommendedProducts = ({ tyres }) => {
         getStockNumber(tyre["In Stock"]) >= 6
     );
 
+
+    const budgetTyres = inStockTyres.filter(
+      (tyre) =>
+        tyre.category?.toLowerCase().trim() === "budget" &&
+        !(tyre.Brand?.toLowerCase() === 'zeta' && tyre.Model?.toLowerCase().includes('antarctica 5'))
+    );
+
+
     const premiumResults = filterAndSortByStock(premiumTyres, premiumBrands);
     const midRangeResults = filterAndSortByStock(midRangeTyres, midRangeBrands.filter(b => b !== "Zeta"));
+    const budgetResults = budgetTyres;
 
     const result = [];
     if (zetaTyre) result.push(zetaTyre);
 
-    return [...result, ...premiumResults, ...midRangeResults];
+    return [...result, ...premiumResults, ...midRangeResults , ...budgetResults];
   };
 
   useEffect(() => {
@@ -140,7 +149,8 @@ const RecommendedProducts = ({ tyres }) => {
   const handleAddToCart = (tyre, price, quantity) => {
     let width = '', profile = '', rimSize = '';
     if (tyre.SIZE && typeof tyre.SIZE === 'string') {
-      const match = tyre.SIZE.match(/^([A-Z]*\d+)(?:\/(\d+))?R(\d+[A-Z]*)$/i);
+      const match = tyre.SIZE.match(/^([A-Z]*\d+(?:\.\d+)?)(?:\/(\d+(?:\.\d+)?))?R(\d+(?:\.\d+)?[A-Z]*)$/i
+      );
       if (match) {
         [, width, profile, rimSize] = match;
       }
@@ -274,6 +284,7 @@ const RecommendedProducts = ({ tyres }) => {
                 <h4 className="text-md font-bold text-gray-800 mb-1 text-center">
                   {tyre.Model}
                 </h4>
+                
 
                 <p className="text-sm text-gray-600 text-center mb-4">
                   <span>{tyre.SIZE} ({tyre["LOAD/SPEED RATING"]})</span>
